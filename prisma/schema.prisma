@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  role      String   @default("USER")
+
+  progress UserProgress[]
+}
+
+model Module {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  order       Int    @unique
+  thumbnail   String
+  quizData    Json
+
+  progress UserProgress[]
+}
+
+model UserProgress {
+  id           Int     @id @default(autoincrement())
+  userId       Int
+  moduleId     Int
+  timerSeconds Int     @default(0)
+  videoViewed  Boolean @default(false)
+  quizScore    Int?
+  quizPassed   Boolean @default(false)
+  isComplete   Boolean @default(false)
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
+}
