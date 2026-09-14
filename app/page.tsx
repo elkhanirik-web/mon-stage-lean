@@ -224,7 +224,7 @@ export default async function LandingPage() {
                 <div className="relative aspect-video w-full bg-slate-200 overflow-hidden">
                   <img
                     src={resolveThumbnail(
-                     "order" in module && typeof module.order === "number" ? module.order : index + 1
+                     "order" in module && typeof module.order === "number" ? module.order : index + 1 ,
                       module.thumbnail,
                     )}
                     alt={module.title}
